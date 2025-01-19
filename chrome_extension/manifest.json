@@ -1,12 +1,13 @@
 {
     "manifest_version": 3,
-    "name": "Tab Pinner",
+    "name": "Tab Manager Pro",
     "version": "1.0",
-    "description": "Automatically pin specific tabs",
+    "description": "Quickly reset and organize your Chrome tabs with customizable pinned tabs and layouts",
     "permissions": [
         "tabs",
         "scripting",
-        "windows"
+        "windows",
+        "storage"
     ],
     "host_permissions": [
         "https://mail.google.com/*",
@@ -18,12 +19,13 @@
     "background": {
         "service_worker": "background.js"
     },
+    "options_page": "options.html",
     "commands": {
         "clear-tabs": {
             "suggested_key": {
                 "default": "Alt+Shift+C"
             },
-            "description": "Clear all tabs"
+            "description": "Reset and organize tabs"
         }
     }
 } 

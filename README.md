@@ -1,40 +1,63 @@
-# Chrome 标签页自动化工具
+# Tab Manager Pro
 
-这个工具可以自动化打开 Chrome 浏览器，并按照预设的顺序打开特定的标签页。
+A Chrome extension that helps you quickly reset and organize your browser tabs with a customizable layout.
 
-## 功能
+## Features
 
-- 打开 Chrome 浏览器
-- 自动打开预设的 6 个标签页
-- 通过 Chrome 扩展自动固定标签页
-- 在最右侧打开一个新的标签页
+- Reset all tabs with a single keyboard shortcut (Alt+Shift+C)
+- Customize which websites to pin and their order
+- Maintain consistent tab organization across browser sessions
+- Easy-to-use configuration interface
+- Settings sync across devices
 
-## 安装步骤
+## Installation
 
-### 1. 安装 Chrome 扩展
+1. Open Chrome Extensions page (`chrome://extensions/`)
+2. Enable "Developer mode" in the top right
+3. Click "Load unpacked" and select the extension directory
 
-1. 打开 Chrome 浏览器
-2. 进入 `chrome://extensions/`
-3. 开启右上角的"开发者模式"
-4. 点击"加载已解压的扩展程序"
-5. 选择项目中的 `chrome_extension` 文件夹
+## Usage
 
-### 2. 安装 Python 程序
+### Quick Reset
 
-1. 安装 Python (3.7 或更高版本)
-2. 安装依赖包：
-   ```
-   pip install -r requirements.txt
-   ```
+1. Press `Alt+Shift+C` to:
+   - Clear all current tabs
+   - Open your configured websites as pinned tabs
+   - Open a new tab at the end
 
-## 使用方法
+### Configure Websites
 
-1. 确保 Chrome 扩展已经安装并启用
-2. 直接双击 `launch_chrome.bat` 文件运行程序
+1. Right-click the extension icon
+2. Select "Options"
+3. In the configuration page, you can:
+   - Add new websites
+   - Remove websites
+   - Reorder websites using up/down arrows
+   - Save your changes
 
-## 注意事项
+## Default Configuration
 
-- 确保 Chrome 浏览器已经安装
-- 程序会使用你当前的 Chrome 用户配置文件
-- 扩展会自动固定指定的标签页
-- 如果标签页没有立即固定，请等待几秒钟
+The extension comes pre-configured with these websites:
+
+- Gmail
+- Google Calendar
+- Google Drive
+- Confluence
+- Datasuite Studio
+- Datasuite Datamap
+
+You can modify this list in the options page to match your needs.
+
+## Technical Details
+
+- Uses Chrome Storage Sync API for settings persistence
+- Implements Chrome Commands API for keyboard shortcuts
+- Built with Manifest V3
+- No external dependencies
+
+## Tips
+
+- Your settings are synced with your Google account
+- Changes take effect immediately after saving
+- You can add as many websites as needed
+- The order in the configuration determines the order of pinned tabs
