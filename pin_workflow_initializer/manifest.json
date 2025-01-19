@@ -25,5 +25,8 @@
             },
             "description": "Initialize pinned workflow"
         }
+    },
+    "icons": {
+        "128": "icon128.png"
     }
 } 
