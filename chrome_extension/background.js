@@ -35,14 +35,10 @@ function clearAllTabs() {
 function checkAndPinTabs() {
     chrome.tabs.query({}, (tabs) => {
         let newTabId = null;
+        let pinnedCount = 0;
         
+        // 首先固定需要固定的标签页
         tabs.forEach(tab => {
-            // 记录新标签页的ID
-            if (tab.url === 'chrome://newtab/') {
-                newTabId = tab.id;
-                return;
-            }
-            
             // 检查标签页URL是否在列表中
             const shouldPin = urlsToPin.some(url => {
                 const baseUrl = url.split('#')[0].split('?')[0];
@@ -51,11 +47,17 @@ function checkAndPinTabs() {
             
             if (shouldPin && !tab.pinned) {
                 chrome.tabs.update(tab.id, { pinned: true });
+                pinnedCount++;
+            }
+            
+            // 记录新标签页的ID
+            if (tab.url === 'chrome://newtab/') {
+                newTabId = tab.id;
             }
         });
         
-        // 最后切换到新标签页
-        if (newTabId) {
+        // 只有当所有标签页都固定好后，才切换到新标签页
+        if (newTabId && pinnedCount === urlsToPin.length) {
             chrome.tabs.update(newTabId, { active: true });
         }
     });
