@@ -45,6 +45,16 @@ Designed for professionals who:
    - Reorder websites using arrows
    - Save your configuration
 
+### Configure Keyboard Shortcut
+
+1. Go to Chrome Extensions page (`chrome://extensions/`)
+2. Click "Keyboard shortcuts" at the bottom of the page
+3. Find "Pin Workflow Initializer"
+4. Set the shortcut for "Initialize Workflow" (default is Alt+Shift+C)
+   - Click the input box
+   - Press your desired key combination
+   - Click "OK" to save
+
 ## Default Workflow
 
 The extension comes pre-configured with these essential tools:
