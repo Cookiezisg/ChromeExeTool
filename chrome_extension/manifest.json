@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "Tab Pinner",
+    "version": "1.0",
+    "description": "Automatically pin specific tabs",
+    "permissions": [
+        "tabs",
+        "scripting",
+        "windows"
+    ],
+    "host_permissions": [
+        "https://mail.google.com/*",
+        "https://calendar.google.com/*",
+        "https://drive.google.com/*",
+        "https://datasuite.shopee.io/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "commands": {
+        "clear-tabs": {
+            "suggested_key": {
+                "default": "Alt+Shift+C"
+            },
+            "description": "Clear all tabs"
+        }
+    }
+} 
