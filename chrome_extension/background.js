@@ -3,6 +3,7 @@ const urlsToPin = [
     'https://mail.google.com/mail/u/0/#inbox',
     'https://calendar.google.com/calendar/u/0/r',
     'https://drive.google.com/drive/u/0/my-drive',
+    'https://confluence.shopee.io/spaces/viewspace.action?key=~weilin.sun@shopee.com',
     'https://datasuite.shopee.io/studio',
     'https://datasuite.shopee.io/datamap/home'
 ];
