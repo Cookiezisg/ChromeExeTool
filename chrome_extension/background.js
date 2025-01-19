@@ -21,54 +21,42 @@ function clearAllTabs() {
                 }
             });
             
-            // 关闭所有标签页（除了最后一个）
+            // 保留最后一个标签页，关闭其他所有标签页
             if (tabIds.length > 1) {
-                chrome.tabs.remove(tabIds.slice(0, -1));
+                chrome.tabs.remove(tabIds.slice(0, -1), () => {
+                    // 在所有标签页关闭后，使用最后一个标签页打开第一个URL
+                    const lastTabId = tabIds[tabIds.length - 1];
+                    chrome.tabs.update(lastTabId, { 
+                        url: urlsToPin[0],
+                        pinned: true
+                    }, () => {
+                        // 打开剩余的标签页
+                        openRemainingTabs();
+                    });
+                });
             }
-            // 确保最后一个标签页是新标签页
-            chrome.tabs.update(tabIds[tabIds.length - 1], { url: 'chrome://newtab' });
         });
     });
 }
 
-// 检查并固定标签页
-function checkAndPinTabs() {
-    chrome.tabs.query({}, (tabs) => {
-        let newTabId = null;
-        let pinnedCount = 0;
-        
-        // 首先固定需要固定的标签页
-        tabs.forEach(tab => {
-            // 检查标签页URL是否在列表中
-            const shouldPin = urlsToPin.some(url => {
-                const baseUrl = url.split('#')[0].split('?')[0];
-                return tab.url.includes(baseUrl);
-            });
-            
-            if (shouldPin && !tab.pinned) {
-                chrome.tabs.update(tab.id, { pinned: true });
-                pinnedCount++;
-            }
-            
-            // 记录新标签页的ID
-            if (tab.url === 'chrome://newtab/') {
-                newTabId = tab.id;
-            }
+// 打开剩余的标签页
+function openRemainingTabs() {
+    // 打开剩余的固定标签页（从第二个开始）
+    for (let i = 1; i < urlsToPin.length; i++) {
+        chrome.tabs.create({ 
+            url: urlsToPin[i], 
+            pinned: true,
+            active: false
         });
-        
-        // 只有当所有标签页都固定好后，才切换到新标签页
-        if (newTabId && pinnedCount === urlsToPin.length) {
-            chrome.tabs.update(newTabId, { active: true });
-        }
-    });
-}
-
-// 监听标签页更新事件
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === 'complete') {
-        checkAndPinTabs();
     }
-});
+    
+    // 最后打开新标签页并激活它
+    chrome.tabs.create({ 
+        url: 'chrome://newtab', 
+        active: true,
+        pinned: false
+    });
+}
 
 // 监听键盘快捷键
 chrome.commands.onCommand.addListener((command) => {
