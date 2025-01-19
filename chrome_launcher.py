@@ -16,14 +16,11 @@ def launch_chrome():
         'chrome://newtab'
     ], cwd=chrome_dir)
     
-    # 等待Chrome启动（减少等待时间）
-    time.sleep(0.5)
+    # 等待Chrome启动
+    time.sleep(1)
     
     # 模拟按下Alt+Shift+C来触发清理
     keyboard.press_and_release('alt+shift+c')
-    
-    # 等待清理完成（减少等待时间）
-    time.sleep(1)
     
     # 要打开的网址列表
     urls = [
@@ -40,8 +37,8 @@ def launch_chrome():
         chrome_path,
         '--profile-directory=Profile 1',
         '--start-maximized',
-        '--no-first-run',            # 跳过首次运行检查
-        '--no-default-browser-check' # 跳过默认浏览器检查
+        '--no-first-run',              # 跳过首次运行检查
+        '--no-default-browser-check'   # 跳过默认浏览器检查
     ] + urls
     
     # 启动Chrome，打开所有标签页

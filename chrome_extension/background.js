@@ -7,35 +7,34 @@ const urlsToPin = [
     'https://datasuite.shopee.io/datamap/home'
 ];
 
-// 清除所有标签页和固定标签页，然后执行一次性固定
+// 清除所有标签页和固定标签页
 function clearAllTabs() {
     chrome.windows.getAll({ populate: true }, (windows) => {
         windows.forEach(window => {
             const tabs = window.tabs;
             const tabIds = tabs.map(tab => tab.id);
             
-            // 批量更新所有固定状态
-            const unpinPromises = tabs
-                .filter(tab => tab.pinned)
-                .map(tab => chrome.tabs.update(tab.id, { pinned: false }));
-            
-            Promise.all(unpinPromises).then(() => {
-                // 关闭所有标签页（除了最后一个）
-                if (tabIds.length > 1) {
-                    chrome.tabs.remove(tabIds.slice(0, -1));
+            // 先取消所有固定状态
+            tabs.forEach(tab => {
+                if (tab.pinned) {
+                    chrome.tabs.update(tab.id, { pinned: false });
                 }
-                // 确保最后一个标签页是新标签页
-                chrome.tabs.update(tabIds[tabIds.length - 1], { url: 'chrome://newtab' });
             });
+            
+            // 关闭所有标签页（除了最后一个）
+            if (tabIds.length > 1) {
+                chrome.tabs.remove(tabIds.slice(0, -1));
+            }
+            // 确保最后一个标签页是新标签页
+            chrome.tabs.update(tabIds[tabIds.length - 1], { url: 'chrome://newtab' });
         });
     });
 }
 
-// 一次性固定标签页并切换到新标签页
-function pinTabsOnce() {
+// 检查并固定标签页
+function checkAndPinTabs() {
     chrome.tabs.query({}, (tabs) => {
         let newTabId = null;
-        const pinPromises = [];
         
         tabs.forEach(tab => {
             // 记录新标签页的ID
@@ -51,24 +50,27 @@ function pinTabsOnce() {
             });
             
             if (shouldPin && !tab.pinned) {
-                pinPromises.push(chrome.tabs.update(tab.id, { pinned: true }));
+                chrome.tabs.update(tab.id, { pinned: true });
             }
         });
         
-        // 等待所有固定操作完成后再切换到新标签页
-        Promise.all(pinPromises).then(() => {
-            if (newTabId) {
-                chrome.tabs.update(newTabId, { active: true });
-            }
-        });
+        // 最后切换到新标签页
+        if (newTabId) {
+            chrome.tabs.update(newTabId, { active: true });
+        }
     });
 }
+
+// 监听标签页更新事件
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete') {
+        checkAndPinTabs();
+    }
+});
 
 // 监听键盘快捷键
 chrome.commands.onCommand.addListener((command) => {
     if (command === 'clear-tabs') {
         clearAllTabs();
-        // 等待标签页加载完成后执行一次性固定
-        setTimeout(pinTabsOnce, 2000);
     }
 }); 
