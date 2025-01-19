@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Tab Manager Pro",
+    "name": "Pin Workflow Initializer",
     "version": "1.0",
-    "description": "Quickly reset and organize your Chrome tabs with customizable pinned tabs and layouts",
+    "description": "One-click solution to initialize your daily workflow with customizable pinned websites in Chrome",
     "permissions": [
         "tabs",
         "scripting",
@@ -25,7 +25,7 @@
             "suggested_key": {
                 "default": "Alt+Shift+C"
             },
-            "description": "Reset and organize tabs"
+            "description": "Initialize pinned workflow"
         }
     }
 } 

@@ -33,10 +33,20 @@ async function clearAllTabs() {
                 }
             });
             
-            // 保留最后一个标签页，关闭其他所有标签页
-            if (tabIds.length > 1) {
+            // If there's only one tab
+            if (tabIds.length === 1) {
+                // Use the existing tab for the first URL
+                chrome.tabs.update(tabIds[0], { 
+                    url: urlsToPin[0],
+                    pinned: true
+                }, () => {
+                    // 打开剩余的标签页
+                    openRemainingTabs(urlsToPin);
+                });
+            } else {
+                // Close all tabs except the last one
                 chrome.tabs.remove(tabIds.slice(0, -1), () => {
-                    // 在所有标签页关闭后，使用最后一个标签页打开第一个URL
+                    // Use the last remaining tab for the first URL
                     const lastTabId = tabIds[tabIds.length - 1];
                     chrome.tabs.update(lastTabId, { 
                         url: urlsToPin[0],
