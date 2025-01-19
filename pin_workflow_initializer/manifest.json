@@ -12,9 +12,7 @@
     "host_permissions": [
         "https://mail.google.com/*",
         "https://calendar.google.com/*",
-        "https://drive.google.com/*",
-        "https://confluence.shopee.io/*",
-        "https://datasuite.shopee.io/*"
+        "https://drive.google.com/*"
     ],
     "background": {
         "service_worker": "background.js"
