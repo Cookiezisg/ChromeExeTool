@@ -14,48 +14,69 @@ function getUrlsToPin() {
     });
 }
 
-// Clear all tabs and pinned tabs
-async function clearAllTabs() {
-    const urlsToPin = await getUrlsToPin();
-    
-    chrome.windows.getAll({ populate: true }, (windows) => {
-        windows.forEach(window => {
-            const tabs = window.tabs;
-            const tabIds = tabs.map(tab => tab.id);
-            
-            // First unpin all tabs
-            tabs.forEach(tab => {
-                if (tab.pinned) {
-                    chrome.tabs.update(tab.id, { pinned: false });
-                }
-            });
-            
-            // If there's only one tab
-            if (tabIds.length === 1) {
-                // Use the existing tab for the first URL
-                chrome.tabs.update(tabIds[0], { 
-                    url: urlsToPin[0],
-                    pinned: true
-                }, () => {
-                    // Open remaining tabs
-                    openRemainingTabs(urlsToPin);
-                });
-            } else {
-                // Close all tabs except the last one
-                chrome.tabs.remove(tabIds.slice(0, -1), () => {
-                    // Use the last remaining tab for the first URL
-                    const lastTabId = tabIds[tabIds.length - 1];
-                    chrome.tabs.update(lastTabId, { 
-                        url: urlsToPin[0],
-                        pinned: true
-                    }, () => {
-                        // Open remaining tabs
-                        openRemainingTabs(urlsToPin);
-                    });
-                });
-            }
+// Get the currently focused window
+function getFocusedWindow() {
+    return new Promise((resolve) => {
+        chrome.windows.getLastFocused({ populate: true }, (window) => {
+            resolve(window);
         });
     });
+}
+
+// Close all other windows except the focused one - now synchronous
+function closeOtherWindows(focusedWindowId) {
+    chrome.windows.getAll({}, (windows) => {
+        windows
+            .filter(window => window.id !== focusedWindowId)
+            .forEach(window => chrome.windows.remove(window.id));
+    });
+}
+
+// Clear all tabs and pinned tabs
+async function clearAllTabs() {
+    const [urlsToPin, focusedWindow] = await Promise.all([
+        getUrlsToPin(),
+        getFocusedWindow()
+    ]);
+    
+    // Immediately close other windows without waiting
+    closeOtherWindows(focusedWindow.id);
+    
+    // Then handle the focused window
+    const tabs = focusedWindow.tabs;
+    const tabIds = tabs.map(tab => tab.id);
+    
+    // First unpin all tabs
+    tabs.forEach(tab => {
+        if (tab.pinned) {
+            chrome.tabs.update(tab.id, { pinned: false });
+        }
+    });
+    
+    // If there's only one tab
+    if (tabIds.length === 1) {
+        // Use the existing tab for the first URL
+        chrome.tabs.update(tabIds[0], { 
+            url: urlsToPin[0],
+            pinned: true
+        }, () => {
+            // Open remaining tabs
+            openRemainingTabs(urlsToPin);
+        });
+    } else {
+        // Close all tabs except the last one
+        chrome.tabs.remove(tabIds.slice(0, -1), () => {
+            // Use the last remaining tab for the first URL
+            const lastTabId = tabIds[tabIds.length - 1];
+            chrome.tabs.update(lastTabId, { 
+                url: urlsToPin[0],
+                pinned: true
+            }, () => {
+                // Open remaining tabs
+                openRemainingTabs(urlsToPin);
+            });
+        });
+    }
 }
 
 // Open remaining tabs
@@ -82,4 +103,9 @@ chrome.commands.onCommand.addListener((command) => {
     if (command === 'clear-tabs') {
         clearAllTabs();
     }
+});
+
+// Listen for extension icon clicks
+chrome.action.onClicked.addListener(() => {
+    clearAllTabs();
 }); 

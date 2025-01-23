@@ -26,6 +26,12 @@
             "description": "Initialize pinned workflow"
         }
     },
+    "action": {
+        "default_icon": {
+            "128": "icon128.png"
+        },
+        "default_title": "Initialize Workflow"
+    },
     "icons": {
         "128": "icon128.png"
     }
