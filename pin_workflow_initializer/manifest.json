@@ -5,14 +5,8 @@
     "description": "One-click solution to initialize your daily workflow with customizable pinned websites in Chrome",
     "permissions": [
         "tabs",
-        "scripting",
         "windows",
         "storage"
-    ],
-    "host_permissions": [
-        "https://mail.google.com/*",
-        "https://calendar.google.com/*",
-        "https://drive.google.com/*"
     ],
     "background": {
         "service_worker": "background.js"
