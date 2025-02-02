@@ -6,7 +6,8 @@
     "permissions": [
         "tabs",
         "windows",
-        "storage"
+        "storage",
+        "tabGroups"
     ],
     "background": {
         "service_worker": "background.js"

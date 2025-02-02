@@ -1,6 +1,6 @@
 # Pin Workflow Initializer
 
-A powerful Chrome extension that helps you instantly organize your workspace by managing pinned tabs across windows with a single click or keyboard shortcut.
+A powerful Chrome extension that helps you instantly organize your workspace by managing pinned tabs and tab groups across windows with a single click or keyboard shortcut.
 
 ## 🎯 Purpose
 
@@ -10,14 +10,20 @@ Perfect for professionals who:
 - Want to maintain a clean and organized browser workspace
 - Prefer a consistent tab layout across browser sessions
 - Work with multiple Chrome windows but want centralized tab management
+- Use Chrome's tab groups feature for better organization
 
 ## ✨ Key Features
 
 - **One-Click Initialization**: Instantly set up your workspace via icon click or keyboard shortcut
 - **Smart Window Management**: Automatically consolidates all tabs into your active window
+- **Tab Groups Preservation**: Maintains your existing tab groups while cleaning up ungrouped tabs
 - **Customizable Workflow**: Fully configurable list of pinned websites
 - **Cross-Device Sync**: Settings sync across all your Chrome instances
-- **Clean Slate Start**: Efficiently cleans up existing tabs before initialization
+- **Performance Optimized**:
+  - Efficient caching system for frequently accessed settings
+  - Parallel processing of tab operations
+  - Smart tab classification and management
+  - Minimal API calls for better performance
 - **Keyboard First**: Quick access via Alt+Shift+C (customizable)
 
 ## 🚀 Installation
@@ -35,10 +41,11 @@ Perfect for professionals who:
 
 Either method will:
 
-1. Close all other Chrome windows
-2. Clean up tabs in your active window
-3. Initialize your pinned websites
-4. Open a fresh new tab
+1. Preserve and collapse all tab groups in your active window
+2. Close all other Chrome windows
+3. Remove ungrouped tabs in your active window
+4. Reset pinned tabs according to your configuration
+5. Open a fresh new tab
 
 ### Customize Your Workflow
 
@@ -70,15 +77,23 @@ The extension comes pre-configured with essential productivity tools:
 - Built with Chrome Extension Manifest V3
 - Uses Chrome Storage Sync API for settings persistence
 - Implements Chrome Commands API for keyboard shortcuts
-- Utilizes Chrome Windows and Tabs APIs for window management
+- Utilizes Chrome Windows, Tabs, and Tab Groups APIs for window management
 - Zero external dependencies
+- Performance optimizations:
+  - URL caching with automatic invalidation
+  - Parallel tab operations
+  - Efficient tab classification
+  - Minimal storage access
+  - Smart state management
 
 ## 💪 Best Practices
 
 - **Window Management**: Always operates from your currently active window
+- **Tab Groups**: Preserves and collapses existing tab groups
 - **Tab Order**: Maintains consistent order of pinned tabs as configured
-- **Clean Workspace**: Automatically removes existing tabs to prevent clutter
+- **Clean Workspace**: Automatically removes ungrouped tabs to prevent clutter
 - **Quick Access**: New tab always opens after pinned tabs for easy navigation
+- **Performance**: Optimized for speed with parallel operations and caching
 
 ## 🤝 Contributing
 
